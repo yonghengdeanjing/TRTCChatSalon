@@ -6,11 +6,11 @@
 
 主播麦位操作：
 
-<img src="https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/pjckq-4zdgj.gif"/>
+[](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/pjckq-4zdgj.gif)
 
 观众麦位操作：
 
-<img src="https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/new.gif"/>
+[](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/new.gif)
 
 如需快速接入语音沙龙功能，您可以直接基于我们提供的 Demo 进行修改适配，也可以使用我们提供的 TRTCChatSalon 组件并实现自定义 UI 界面。
 
@@ -51,9 +51,8 @@
 ### 步骤4：编译运行
 > 安卓需要在真机下运行，不支持模拟器调试
 
-1. 执行 `flutter pub get`。
-2. 编译运行调试：
-<dx-tabs>
+执行 `flutter pub get`
+
 Android端
 
 1. 执行 `flutter run`。
@@ -62,7 +61,6 @@ Android端
 iOS端
 1. 使用 XCode（11.0及以上的版本）打开源码目录下的 `/ios工程`。
 2. 编译并运行 Demo 工程即可。
-</dx-tabs>
 
 [](id:ui.step5)
 ### 步骤5：修改 Demo 源代码
@@ -84,6 +82,6 @@ iOS端
 [](id:model.step1)
 
 
-详情参考[文档](https://tcloud-doc.isd.com/document/product/647/53582)
+实现自定义 UI 界面详情参考[文档](https://tcloud-doc.isd.com/document/product/647/53582)
 
 场景sdk参考[文档](https://tcloud-doc.isd.com/document/product/647/53583)
