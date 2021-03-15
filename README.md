@@ -3,16 +3,14 @@
 注意：本项目暂不支持flutter2.0，如果您用的是flutter2.0版本，请先降低版本。
 
 您可以 [下载](https://cloud.tencent.com/document/product/647/17021) 安装我们的 Demo 体验语音沙龙的能力，包括语音聊天、上下麦、低延时语音互动等 TRTC 在语音聊天场景下的相关能力。
-<table>
-     <tr>
-         <th>主播麦位操作</th>  
-         <th>观众麦位操作</th>  
-     </tr>
-<tr>
-<td><img src="https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/pjckq-4zdgj.gif"/></td>
-<td><img src="https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/new.gif"/></td>
-</tr>
-</table>
+
+主播麦位操作：
+
+<img src="https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/pjckq-4zdgj.gif"/>
+
+观众麦位操作：
+
+<img src="https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/new.gif"/>
 
 如需快速接入语音沙龙功能，您可以直接基于我们提供的 Demo 进行修改适配，也可以使用我们提供的 TRTCChatSalon 组件并实现自定义 UI 界面。
 
@@ -56,14 +54,14 @@
 1. 执行 `flutter pub get`。
 2. 编译运行调试：
 <dx-tabs>
-:::  Android端
+Android端
+
 1. 执行 `flutter run`。
 2. 使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
-:::
-::: iOS端
+
+iOS端
 1. 使用 XCode（11.0及以上的版本）打开源码目录下的 `/ios工程`。
 2. 编译并运行 Demo 工程即可。
-:::
 </dx-tabs>
 
 [](id:ui.step5)
@@ -84,269 +82,8 @@
 ![](https://main.qcloudimg.com/raw/fcf694c8550664623414604d14ffcd94.png)
 
 [](id:model.step1)
-### 步骤1：集成 SDK
-语音沙龙组件 trtcchatsalondemo 依赖 [TRTC SDK](https://pub.dev/packages/tencent_trtc_cloud) 和 [IM SDK](https://pub.dev/packages/tencent_im_sdk_plugin)，您可以通过配置 `pubspec.yaml` 自动下载更新。
-1. 在项目的 `pubspec.yaml` 中写如下依赖：
-```
-dependencies:
-  tencent_trtc_cloud: 最新版本号
-  tencent_im_sdk_plugin: 最新版本号
-```
 
 
-[](id:model.step2)
-### 步骤2：配置权限及混淆规则
-<dx-tabs>
-::: iOS端
-1. 需要在 `Info.plist` 中加入对相机和麦克风的权限申请：
-```
-<key>NSMicrophoneUsageDescription</key>
-<string>授权麦克风权限才能正常语音通话</string>
-```
-:::
-::: Android端
-1. 打开 `/android/app/src/main/AndroidManifest.xml` 文件。
-2. 将 `xmlns:tools="http://schemas.android.com/tools"` 加入到 manifest 中。
-3. 将 `tools:replace="android:label"` 加入到 application 中。
->? 若不执行此步，会出现 [Android Manifest merge failed 编译失败](https://cloud.tencent.com/document/product/647/51623#que6) 问题。
+详情参考[文档](https://tcloud-doc.isd.com/document/product/647/53582)
 
-
-![图示](https://main.qcloudimg.com/raw/7a37917112831488423c1744f370c883.png)
-:::
-</dx-tabs>
-
-
-[](id:model.step3)
-### 步骤3：导入 TRTCChatSalon 组件
-拷贝以下目录中的所有文件到您的项目中：
-```
-lib/TRTCChatSalonDemo/model/
-```
-
-[](id:model.step4)
-### 步骤4：创建并登录组件
-1. 调用 `sharedInstance` 接口可以创建一个 TRTCChatSalon 组件的实例对象。
-2. 调用 `registerListener` 函数注册组件的事件通知。
-3. 调用 `login` 函数完成组件的登录，请参考下表填写关键参数：
- <table>
-<tr>
-<th>参数名</th>
-<th>作用</th>
-</tr>
-<tr>
-<td>sdkAppId</td>
-<td>您可以在 <a href="https://console.cloud.tencent.com/trtc/app">实时音视频控制台</a> 中查看 SDKAppID。</td>
-</tr>
-<tr>
-<td>userId</td>
-<td>当前用户的 ID，字符串类型，只允许包含英文字母（a-z、A-Z）、数字（0-9）、连词符（-）和下划线（_）。</td>
-</tr>
-<tr>
-<td>userSig</td>
-<td>腾讯云设计的一种安全保护签名，获取方式请参考 <a href="https://cloud.tencent.com/document/product/647/17275">如何计算 UserSig</a>。</td>
-</tr>
-</table>
-<dx-codeblock>
-::: dart dart
-TRTCChatSalon trtcVoiceRoom = await TRTCChatSalon.sharedInstance();
-trtcVoiceRoom.registerListener(onVoiceListener);
-ActionCallback resValue = await trtcVoiceRoom.login(
-    GenerateTestUserSig.sdkAppId,
-    userId,
-    GenerateTestUserSig.genTestSig(userId),
-);
-if (resValue.code == 0) {
-    //登录成功
-}
-:::
-</dx-codeblock>
-
-[](id:model.step5)
-### 步骤5：主播端开播
-1. 主播执行 [步骤4](#model.step4) 登录后，可以调用 `setSelfProfile` 设置自己的昵称和头像。
-2. 主播调用 `createRoom` 创建新的语音沙龙，此时传入房间 ID、房间名等房间属性信息。
-3. 主播会收到有成员进入的 `TRTCChatSalonDelegate.onAudienceEnter` 的事件通知，此时会自动打开麦克风采集。
-
-![](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/chatsalon_zbo.png)
-
-<dx-codeblock>
-::: java java
-// 1.主播设置昵称和头像
-trtcVoiceRoom.setSelfProfile("my_name", "my_face_url", null);
-
-// 2.主播调用 createRoom 创建房间
-ActionCallback resp = await trtcVoiceRoom.createRoom(
-    roomId,
-    RoomParam(
-    coverUrl: '房间封面图的 URL 地址',
-    roomName: '房间名称',
-    ),
-);
-if (resp.code == 0) {
-   //占座成功
-}
-
-// 4.占座成功后， 收到 TRTCChatSalonDelegate.onAudienceEnter 事件通知
-onVoiceListener(type, param) async {
-    switch (type) {
-        case TRTCChatSalonDelegate.onAudienceEnter:
-            //观众进入房间
-            break;
-    }
-}
-:::
-</dx-codeblock>
-
-[](id:model.step6)
-### 步骤6：观众端观看
-1. 观众端执行 [步骤4](#model.step4) 登录后，可以调用 `setSelfProfile` 设置自己的昵称和头像。
-2. 观众端向业务后台获取最新的语音沙龙房间列表。
- >?Demo 中的语音沙龙列表仅做演示使用，语音沙龙列表的业务逻辑千差万别，腾讯云暂不提供语音沙龙列表的管理服务，请自行管理您的语音沙龙列表。
- >
-3. 观众端调用 `getRoomList` 获取房间的详细信息，该信息是在主播端调用  `createRoom` 创建语音沙龙时设置的简单描述信息。
- >!如果您的语音沙龙列表包含了足够全面的信息，可跳过调用 `getRoomList` 相关步骤。 并传入房间号即可进入该房间。
-4. 进房后会收到组件的 `TRTCChatSalonDelegate.onAudienceEnter` 和 `TRTCChatSalonDelegate.onAudienceExit` 观众进退房通知，监听到事件回调后可以将变化然后刷新到 UI 界面上。
-5. 进房后还会收到麦位表有主播进入的 `TRTCChatSalonDelegate.onAnchorEnterMic` 和 `TRTCChatSalonDelegate.onAnchorLeaveMic` 的事件通知。
-
-![](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/chatsalon.png)
-<dx-codeblock>
-::: dart dart
-// 1.观众设置昵称和头像
-trtcVoiceRoom.setSelfProfile("my_name", "my_face_url");
-
-// 2.假定您从业务后台获取房间列表为 roomList
-List<Integer> roomList = GetRoomList();
-
-// 3.通过调用 getRoomInfoList 获取房间的详细信息
-RoomInfoCallback resp = await trtcVoiceRoom.getRoomInfoList(roomList);
-if (resp.code == 0) {
-    //此时可以刷新您自己的 UI 房间列表
-} 
-
-// 4.传入 roomid 进入房间
-ActionCallback enterRoomResp =
-          await trtcVoiceRoom.enterRoom(_currentRoomId);
-if (enterRoomResp.code == 0) {
-    //进房成功
-}
-// 5.进房成功后，收到处理事件通知
-onVoiceListener(type, param) async {
-    switch (type) {
-      case TRTCChatSalonDelegate.onAudienceEnter:
-            //观众进入房间
-        break;
-      case TRTCChatSalonDelegate.onAudienceExit:
-            //观众离开房间
-        break;
-      case TRTCChatSalonDelegate.onAnchorLeaveMic:
-          //主播离开房间
-        break;
-      case TRTCChatSalonDelegate.onAnchorEnterMic:
-          //主播进入房间
-        break;
-    }
-}
-:::
-</dx-codeblock>
-
-[](id:model.step7)
-### 步骤7：上下麦
-
-<dx-tabs>
-::: 主播端
-1.  `leaveMic` 主动下麦,房间内所有成员会收到 `onAnchorLeaveMic` 的事件通知。
-2.  `kickMic` 传入对应用户的userId后，可以踢人下麦。群主踢人下麦，房间内所有成员会收到 `onAnchorLeaveMic` 的事件通知。
-
-![](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/chatsalon-ma-m.png)
-
-
-<dx-codeblock>
-::: dart dart
-// 1.主播主动下麦
-trtcVoiceRoom.leaveMic();
-
-//2.踢人下麦
-trtcVoiceRoom.kickMic(userId);
-
-:::
-</dx-codeblock>
-:::
-::: 观众端
-1.  `enterMic` 可以进行上麦，房间内所有成员会收到 `onAnchorEnterMic` 的事件通知。
-2.  `leaveMic` 主动下麦，房间内所有成员会收到 `onAnchorLeaveMic` 的事件通知。
-
-![](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/chatsalon-ma-au.png)
-
-
-<dx-codeblock>
-::: dart dart
-// 1.观众主动上麦
-trtcVoiceRoom.enterMic();
-
-// 2.主动下麦
-trtcVoiceRoom.leaveMic();
-
-:::
-</dx-codeblock>
-:::
-</dx-tabs>
-
-
-[](id:model.step8)
-### 步骤8：举手要求上麦信令的使用
-如果您的 App 需要对方同意才能进行下一步操作的业务流程，那么邀请信令可以提供相应支持。
-
-#### 观众主动申请上麦
-1. 观众端调用 `raiseHand` 申请举手。
-2. 主播端收到 `onRaiseHand` 的事件，此时 UI 可以弹窗并询问主播是否同意。
-3. 主播选择同意后，调用 `agreeToSpeak` 并传入 userId。
-4. 观众端收到 `onAgreeToSpeak` 的事件通知，调用 `enterMic` 进行上麦。
-
-![](https://tccweb-1258344699.cos.ap-nanjing.myqcloud.com/sdk/trtc/chatsalon/chatsalon-si.png)
-
-<dx-codeblock>
-::: dart dart
-// 观众端视角
-// 1.调用 sendInvitation，请求上麦
-trtcVoiceRoom.raiseHand();
-
-// 2.收到邀请的同意请求, 正式上麦
-onVoiceListener(type, param) async {
-    switch (type) {
-      case TRTCChatSalonDelegate.onRaiseHand:
-           trtcVoiceRoom.enterMic();
-        break;
-    }
-}
-
-// 主播端视角
-// 1.主播收到请求
-onVoiceListener(type, param) async {
-    switch (type) {
-      case TRTCChatSalonDelegate.onAgreeToSpeak:
-           trtcVoiceRoom.agreeToSpeak();
-        break;
-    }
-}
-:::
-</dx-codeblock>
-
-[](id:model.step9)
-### 步骤9：实现文字聊天和弹幕消息
-- 通过 `sendRoomTextMsg` 可以发送普通的文本消息，所有在该房间内的主播和观众均可以收到 `onRecvRoomTextMsg` 回调。
- 即时通信 IM 后台有默认的敏感词过滤规则，被判定为敏感词的文本消息不会被云端转发。
-<dx-codeblock>
-::: dart dart
-// 发送端：发送文本消息
-trtcVoiceRoom.sendRoomTextMsg("Hello Word!");
-
-// 接收端：监听文本消息
-onVoiceListener(type, param) async {
-    switch (type) {
-      case TRTCChatSalonDelegate.onRecvRoomTextMsg:
-            //收到群文本消息，可以用作文本聊天室
-        break;
-    }
-}
-:::
-</dx-codeblock>
+场景sdk参考[文档](https://tcloud-doc.isd.com/document/product/647/53583)
